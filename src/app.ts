@@ -1,0 +1,35 @@
+import express from "express"
+import dotenv from "dotenv"
+import morgan from "morgan"
+import cors from "cors"
+import bodyParser from "body-parser"
+import {errorMiddleware} from "./middleware/error";
+import {FirstQuery} from "./actions/attendance/firstQuery";
+
+const app = express();
+dotenv.config();
+const PORT = process.env.PORT || 3333
+
+app.use(morgan("dev"))
+app.use(bodyParser.json())
+app.use(cors())
+
+//ports
+
+app.get("/first-query", async  (req, res) => {
+    const response = await FirstQuery()
+    res.json(response);
+})
+
+
+
+// todo: fazer e testar api rd station
+// todo: log de erros
+// todo: desenvolver metodo para impedir duplicata
+
+
+
+app.use(errorMiddleware);
+app.listen(PORT, () => {
+    console.log(`server is running at ${PORT}`)
+})
