@@ -15,14 +15,14 @@ export const FirstQuery = async () => {
 
         for (const deal of deals.deals) {
             let custom_fields = deal.deal_custom_fields.map(({custom_field_id, value}) => ({custom_field_id, value}))
-            const first_query_date = getUniqueField(custom_fields, "646e0d0700a1d40017275b92")
+            //const first_query_date = getUniqueField(custom_fields, "646e0d0700a1d40017275b92")
             await CompareFields(deal).then(async res => {
 
                 const checkDeadLine = await CheckDeadLine(res.deal?.attendance.start_date);
 
                 if (res.contact?.attContact) await UpdateContact(res.contact.contact.id, res.contact.params)
-                    .then(res_contact => console.log(` [ INFO ] - updated contact information ${res.contact?.contact.name}`))
-                    .catch(err => console.log(` [ ERROR ] - error to update contact information`))
+                    .then(() => console.log(` [ INFO ] - updated contact information ${res.contact?.contact.name}`))
+                    .catch(() => console.log(` [ ERROR ] - error to update contact information`))
 
                 if(res.deal?.attDeal || checkDeadLine) {
                     //todo : verificar pq não editou o medico!
@@ -31,7 +31,7 @@ export const FirstQuery = async () => {
                         ...(checkDeadLine ? {deal_stage_id: "646d27436d6ecc000f94f996"} : null )
                     }
                     await UpdateDeal(deal.id, params)
-                        .then(res_deal => console.log(` [ INFO ] - updated deal ${deal.name}...`))
+                        .then(() => console.log(` [ INFO ] - updated deal ${deal.name}...`))
                         .catch(err => {
                             console.log(` [ ERROR ] - error to update deal...`)
                             throw new Error(err)

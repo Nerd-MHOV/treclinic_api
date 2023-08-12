@@ -1,8 +1,7 @@
-import {Contact, Deal, UpdateContactParams} from "../rdstation/rd.types";
+import {Contact, Deal} from "../rdstation/rd.types";
 import {getPatientPK} from "../../db";
 import {rdCreateTask} from "../rdstation/createTask";
 import {format} from "date-fns";
-import {UpdateContact} from "../rdstation/updateContact";
 import {getUniqueField} from "./compareFields";
 
 export async function CompareFieldsContact(contact: Contact, deal: Deal) {
@@ -37,8 +36,8 @@ export async function CompareFieldsContact(contact: Contact, deal: Deal) {
                     hour: format(new Date(), "HH:ii"),
                     notes: `O id: ${patient_id?.value} não foi encontrado nos pacientes!`
                 }
-            }).then(res => console.log(`[ INFO ] - task to change contactID created`))
-                .catch(res => console.log(` [ ERROR ] - err to create task change contactID`))
+            }).then(() => console.log(`[ INFO ] - task to change contactID created`))
+                .catch(() => console.log(` [ ERROR ] - err to create task change contactID`))
             throw new Error(`patient not found`)
         }
         if( cpf && !cpf.value && !!patient.cpf) {

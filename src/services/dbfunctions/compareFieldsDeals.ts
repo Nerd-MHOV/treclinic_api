@@ -27,8 +27,8 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
                     hour: format(new Date(), "HH:ii"),
                     notes: `O id: ${agenda_id?.value} não foi encontrado no atendimentos futuros!`
                 }
-            }).then(res => console.log(`[ INFO ] - task to change attendanceID created`))
-                .catch(err => console.log(` [ ERROR ] - err to create task change attendanceID`))
+            }).then(() => console.log(`[ INFO ] - task to change attendanceID created`))
+                .catch(() => console.log(` [ ERROR ] - err to create task change attendanceID`))
             throw new Error(`attendance not found`)
         }
 
