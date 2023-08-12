@@ -25,7 +25,6 @@ export const FirstQueryDermatology = async () => {
                     .catch(() => console.log(` [ ERROR ] - error to update contact information`))
 
                 if(res.deal?.attDeal || checkDeadLine) {
-                    //todo : verificar pq não editou o medico!
                     const params = {
                         ...(res.deal?.params ? res.deal?.params : null),
                         ...(checkDeadLine ? {deal_stage_id: "646e06782e8a2c000ea12f0a"} : null )
