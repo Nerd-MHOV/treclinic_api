@@ -5,6 +5,7 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import {errorMiddleware} from "./middleware/error";
 import {FirstQuery} from "./actions/attendance/firstQuery";
+import {OperationalSurgery} from "./actions/beforeSurgery/operationalSurgery";
 
 const app = express();
 dotenv.config();
@@ -18,6 +19,11 @@ app.use(cors())
 
 app.get("/first-query", async  (req, res) => {
     const response = await FirstQuery()
+    res.json(response);
+})
+
+app.get("/before-surgery", async (req, res) => {
+    const response = await OperationalSurgery();
     res.json(response);
 })
 
