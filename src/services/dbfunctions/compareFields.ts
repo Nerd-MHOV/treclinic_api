@@ -1,4 +1,3 @@
-import {Contact, Deal} from "../rdstation/rd.types";
 
 // export  function getDealsFields(deal: Deal) {
 //     return {
@@ -12,6 +11,24 @@ import {Contact, Deal} from "../rdstation/rd.types";
 //     }
 // }
 
+
+import {Deal} from "../rdstation/rd.types";
+import {rdGetContactDeal} from "../rdstation/getContactDeal";
+import {CompareFieldsContact} from "./compareFieldsContact";
+import {CompareFieldsDeal} from "./compareFieldsDeals";
+
+export async function CompareFields(deal_to_compare: Deal) {
+   const contact = await rdGetContactDeal(deal_to_compare.id)
+        .then(async contact => {
+            return await CompareFieldsContact(contact.contacts[0], deal_to_compare.id);
+        })
+    const deal = await CompareFieldsDeal(deal_to_compare)
+
+    return {
+       contact,
+        deal
+    }
+}
 
 export function getUniqueField(custom_fields: { custom_field_id: string; value: string | string[] | number | null }[], id: string) {
     return custom_fields

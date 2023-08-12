@@ -1,7 +1,12 @@
 import {UpdateDealParams, UpdateDealResponse} from "./rd.types";
 import {rdApi} from "./rdApi";
 
-export async function UpdateDeal(deal_id: string, params: { deal: { deal_custom_fields: { custom_field_id: string; value: string | number | null }[] } }) {
+export async function UpdateDeal(deal_id: string, params: {
+    deal?: {
+        deal_custom_fields?: { custom_field_id: string; value: string | number | null }[],
+    },
+    deal_stage_id?: string
+}) {
     return new Promise<UpdateDealResponse>((resolve, reject) => {
         rdApi.put("/deals/"+deal_id, {...params})
             .then(response => {

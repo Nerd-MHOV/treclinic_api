@@ -89,16 +89,16 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         }
 
         console.log(` [ INFO ] - deal update`, attDeal);
-        if(attDeal) await UpdateDeal(deal.id, {
+        const params = {
             deal: {
                 deal_custom_fields: custom_fields
             }
-        })
-            .then(res => console.log(` [ INFO ] - updated deal ${deal.name}...`))
-            .catch(err => {
-                console.log(` [ ERROR ] - error to update deal...`)
-                throw new Error(err)
-            })
+        }
+        return {
+            deal,
+            params,
+            attDeal
+        }
 
     }catch (e) {
         console.log(` [ ERROR ] - error to compare fields deal: `, deal.name)

@@ -101,15 +101,18 @@ export async function CompareFieldsContact(contact: Contact, deal_id: string) {
         }
 
         console.log(` [ INFO ] - contact update`, attContact);
-        if (attContact) UpdateContact(contact.id, {
+        const params = {
             contact: {
                 contact_custom_fields: custom_fields,
                 emails,
                 phones
             }
-        })
-            .then(res => console.log(` [ INFO ] - updated contact information ${contact.name}`))
-            .catch(err => console.log(` [ ERROR ] - error to update contact information`))
+        }
+        return {
+            contact,
+            params,
+            attContact,
+        }
     }catch (e) {
         console.log(` [ ERROR ] - error to compare fields contact: `, contact?.name)
         return null
