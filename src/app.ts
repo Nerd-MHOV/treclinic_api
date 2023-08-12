@@ -22,13 +22,6 @@ app.get("/first-query", async  (req, res) => {
 })
 
 
-
-// todo: fazer e testar api rd station
-// todo: log de erros
-// todo: desenvolver metodo para impedir duplicata
-
-
-
 app.use(errorMiddleware);
 app.listen(PORT, () => {
     console.log(`server is running at ${PORT}`)

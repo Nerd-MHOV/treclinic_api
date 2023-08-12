@@ -220,3 +220,9 @@ export interface CreateTaskParams {
     }
     user_ids?: string[]
 }
+
+export interface CreateProductParams {
+    amount: number,
+    price: number,
+    product_id: string,
+}

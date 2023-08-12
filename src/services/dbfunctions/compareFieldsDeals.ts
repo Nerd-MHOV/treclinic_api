@@ -17,12 +17,17 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         const agenda_type = getUniqueField(custom_fields, "64d4fd2db72bbb001e1ef67f")
         const attendance = (await getAttendancePk(agenda_id?.value + ""))?.rows[0];
         if(!attendance) {
+            // todo: uma vez por dia!
+
+            const taskDate = new Date()
+            taskDate.setFullYear(taskDate.getFullYear() - 1);
+            if(deal.next_task.subject !== "ERRO ID AGENDAMENTO" && deal.next_task.subject !== "ERRO ID PACIENTE")
             rdCreateTask({
                 task: {
                     deal_id: deal.id,
                     subject: "ERRO ID AGENDAMENTO",
                     type: "task",
-                    date: format(new Date(), "yyyy-MM-dd"),
+                    date: format(taskDate, "yyyy-MM-dd"),
                     hour: format(new Date(), "HH:ii"),
                     notes: `O id: ${agenda_id?.value} não foi encontrado no atendimentos futuros!`
                 }
@@ -33,10 +38,13 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
 
 
 
-        if(!surgery && date_first_query && !date_first_query.value && !!attendance.start_date) {
-            date_first_query.value = format(attendance.start_date, "dd/MM/yyyy")
-            attDeal = true
-            console.log(` [ INFO ] - field deal data_first_query`);
+        if(!surgery && date_first_query && !!attendance.start_date) {
+            const formatStartDate = format(attendance.start_date, "dd/MM/yyyy")
+            if(formatStartDate !== date_first_query.value) {
+                date_first_query.value = formatStartDate
+                attDeal = true
+                console.log(` [ INFO ] - field deal data_first_query`);
+            }
         } else if(!surgery && !date_first_query && !!attendance.start_date) {
             custom_fields.push({
                 custom_field_id: '646e0d0700a1d40017275b92',
@@ -46,10 +54,13 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
             console.log(` [ INFO ] - field deal data_first_query`);
         }
 
-        if(surgery && date_surgery && !date_surgery.value && !!attendance.start_date) {
-            date_surgery.value = format(attendance.start_date, "dd/MM/yyyy")
-            attDeal = true
-            console.log(` [ INFO ] - field deal date_surgery`);
+        if(surgery && date_surgery && !!attendance.start_date) {
+            const formatStartDate = format(attendance.start_date, "dd/MM/yyyy")
+            if(formatStartDate !== date_surgery.value) {
+                date_surgery.value = formatStartDate
+                attDeal = true
+                console.log(` [ INFO ] - field deal date_surgery`);
+            }
         } else if (surgery && !date_surgery && !!attendance.start_date ) {
             custom_fields.push({
                 custom_field_id: "646e0ceafcdd950011703ab2",
@@ -58,24 +69,20 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
             attDeal = true
             console.log(` [ INFO ] - field deal date_surgery`);
         }
-        if(medic && !medic.value && attendance.user_id in medics) {
-            // @ts-ignore
-            const medicSelected = medics[attendance.user_id];
-            medic.value = [medicSelected]
-            attDeal = true
-            console.log(` [ INFO ] - field deal medic_name`);
-        } else if (!medic && attendance.user_id in medics) {
-            // @ts-ignore
-            const medicSelected = medics[attendance.user_id];
+        if(medic && Array.isArray(medic.value) && !!attendance.medic_name && !medic.value.includes(attendance.medic_name)) {
+                medic.value.push(attendance.medic_name)
+                attDeal = true
+                console.log(` [ INFO ] - field deal medic_name`);
+        } else if (!medic && !!attendance.medic_name) {
             custom_fields.push({
                 custom_field_id: '646ea8f90f9bd3000f6f6f8e',
                 // @ts-ignore
-                value: [medicSelected]
+                value: [attendance.medic_name]
             })
             attDeal = true
             console.log(` [ INFO ] - field deal medic_name`);
         }
-        if(agenda_type && !agenda_type.value && !!attendance.agenda_name) {
+        if(agenda_type && !!attendance.agenda_name && agenda_type.value !== attendance.agenda_name) {
             agenda_type.value = attendance.agenda_name
             attDeal = true
             console.log(` [ INFO ] - field deal agenda_type`);
@@ -97,7 +104,8 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         return {
             deal,
             params,
-            attDeal
+            attDeal,
+            attendance,
         }
 
     }catch (e) {

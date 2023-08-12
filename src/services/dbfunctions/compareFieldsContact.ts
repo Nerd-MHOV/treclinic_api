@@ -1,11 +1,11 @@
-import {Contact, UpdateContactParams} from "../rdstation/rd.types";
+import {Contact, Deal, UpdateContactParams} from "../rdstation/rd.types";
 import {getPatientPK} from "../../db";
 import {rdCreateTask} from "../rdstation/createTask";
 import {format} from "date-fns";
 import {UpdateContact} from "../rdstation/updateContact";
 import {getUniqueField} from "./compareFields";
 
-export async function CompareFieldsContact(contact: Contact, deal_id: string) {
+export async function CompareFieldsContact(contact: Contact, deal: Deal) {
     try { //27819125
         let attContact = false;
         let custom_fields = contact.contact_custom_fields.map(({ custom_field_id, value }) => ({
@@ -25,9 +25,12 @@ export async function CompareFieldsContact(contact: Contact, deal_id: string) {
 
         const patient = (await getPatientPK(patient_id?.value + ""))?.rows[0]
         if(!patient) {
+            const taskDate = new Date()
+            taskDate.setFullYear(taskDate.getFullYear() - 1);
+            if(deal.next_task.subject !== "ERRO ID AGENDAMENTO" && deal.next_task.subject !== "ERRO ID PACIENTE")
             await rdCreateTask({
                 task: {
-                    deal_id: deal_id,
+                    deal_id: deal.id,
                     subject: "ERRO ID PACIENTE",
                     type: "task",
                     date: format(new Date(), "yyyy-MM-dd"),
