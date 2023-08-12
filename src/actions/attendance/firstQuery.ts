@@ -18,7 +18,7 @@ export const FirstQuery = async () => {
             const first_query_date = getUniqueField(custom_fields, "646e0d0700a1d40017275b92")
             await CompareFields(deal).then(async res => {
 
-                const checkDeadLine = await CheckDeadLine(res.deal?.attendance.start_date, deal);
+                const checkDeadLine = await CheckDeadLine(res.deal?.attendance.start_date);
 
                 if (res.contact?.attContact) await UpdateContact(res.contact.contact.id, res.contact.params)
                     .then(res_contact => console.log(` [ INFO ] - updated contact information ${res.contact?.contact.name}`))

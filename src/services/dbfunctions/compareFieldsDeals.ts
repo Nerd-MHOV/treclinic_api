@@ -1,9 +1,7 @@
-import {Deal, UpdateDealParams} from "../rdstation/rd.types";
+import {Deal} from "../rdstation/rd.types";
 import {getAttendancePk} from "../../db";
 import {rdCreateTask} from "../rdstation/createTask";
 import {format} from "date-fns";
-import {medics} from "../rdstation/medics";
-import {UpdateDeal} from "../rdstation/updateDeal";
 import {getUniqueField} from "./compareFields";
 
 export async function CompareFieldsDeal(deal: Deal, surgery = false) {
@@ -17,8 +15,6 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         const agenda_type = getUniqueField(custom_fields, "64d4fd2db72bbb001e1ef67f")
         const attendance = (await getAttendancePk(agenda_id?.value + ""))?.rows[0];
         if(!attendance) {
-            // todo: uma vez por dia!
-
             const taskDate = new Date()
             taskDate.setFullYear(taskDate.getFullYear() - 1);
             if(deal.next_task.subject !== "ERRO ID AGENDAMENTO" && deal.next_task.subject !== "ERRO ID PACIENTE")

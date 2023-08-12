@@ -1,9 +1,6 @@
-import {format} from "date-fns";
-import {Deal} from "./rd.types";
 import {SendMessage} from "../chatguru/sendMessage";
-import {UpdateDeal} from "./updateDeal";
 
-export const CheckDeadLine = async (scheduled_day: Date | null, deal: Deal) => {
+export const CheckDeadLine = async (scheduled_day: Date | null) => {
 
     try {
         if(!scheduled_day) throw new Error(`this is not a Date`)
