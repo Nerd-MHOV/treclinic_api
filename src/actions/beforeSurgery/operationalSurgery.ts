@@ -1,6 +1,5 @@
 import {rdGetDeals} from "../../services/rdstation/getDeals";
 import {CompareFields} from "../../services/dbfunctions/compareFields";
-import {CheckDeadLine} from "../../services/rdstation/checkDeadLine";
 import {UpdateContact} from "../../services/rdstation/updateContact";
 import {UpdateDeal} from "../../services/rdstation/updateDeal";
 import {AttProductInDeal} from "../../services/rdstation/AttProductInDeal";
