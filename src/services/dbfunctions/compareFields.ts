@@ -17,12 +17,12 @@ import {rdGetContactDeal} from "../rdstation/getContactDeal";
 import {CompareFieldsContact} from "./compareFieldsContact";
 import {CompareFieldsDeal} from "./compareFieldsDeals";
 
-export async function CompareFields(deal_to_compare: Deal) {
+export async function CompareFields(deal_to_compare: Deal, surgery = false) {
    const contact = await rdGetContactDeal(deal_to_compare.id)
         .then(async contact => {
             return await CompareFieldsContact(contact.contacts[0], deal_to_compare);
         })
-    const deal = await CompareFieldsDeal(deal_to_compare)
+    const deal = await CompareFieldsDeal(deal_to_compare, surgery)
 
     return {
        contact,

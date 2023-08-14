@@ -13,7 +13,7 @@ export const OperationalSurgery = async () => {
         console.log(` [ INFO ] - find ${deals.total} deals in operational surgery ...`)
 
         for (const deal of deals.deals) {
-            await CompareFields(deal).then(async res => {
+            await CompareFields(deal, true).then(async res => {
                 if (res.contact?.attContact) await UpdateContact(res.contact.contact.id, res.contact.params)
                     .then(() => console.log(` [ INFO ] - updated contact information ${res.contact?.contact.name}`))
                     .catch(() => console.log(` [ ERROR ] - error to update contact information`))
@@ -28,13 +28,14 @@ export const OperationalSurgery = async () => {
                             throw new Error(err)
                         })
                 }
-                if(res.deal?.attendance.price !== 0) await AttProductInDeal(deal, res.deal?.attendance.price);
+                if(res.deal?.attendance.price !== 0)
+                    await AttProductInDeal(deal, res.deal?.attendance.price, "6476897a6ee1810001122a22");
             })
 
         }
         console.log(` [ INFO ] - Finish process Operational Surgery....`)
 
-        return `First Query Process`
+        return `Instrumentalist Operational before surgery`
     }).catch( err => {
         console.log(" [ ERROR ] - Error executing function OperationalSurgery()....", err)
         return null;

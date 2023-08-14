@@ -1,4 +1,4 @@
-import {UpdateDealParams, UpdateDealResponse} from "./rd.types";
+import {UpdateDealResponse} from "./rd.types";
 import {rdApi} from "./rdApi";
 
 export async function UpdateDeal(deal_id: string, params: {
@@ -14,8 +14,8 @@ export async function UpdateDeal(deal_id: string, params: {
             })
             .catch(error => {
                 if(error?.response?.status === 422) {
-                    console.log(` [ INFO ] - 422 updated deal but some information is wrong`)
-                    if(error?.response?.data) resolve(error?.response?.data)
+                    console.log(` [ ERROR ] - 422 updated deal but some information is wrong`)
+                    if(error?.response?.data) reject(error?.response?.data)
                 } else {
                     console.log(` [ ERROR ] - error updating a deal...`)
                 }

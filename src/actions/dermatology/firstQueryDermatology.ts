@@ -14,11 +14,9 @@ export const FirstQueryDermatology = async () => {
         console.log(` [ INFO ] - find ${deals.total} deals in DERMATOLOGY first query ...`)
 
         for (const deal of deals.deals) {
-            //let custom_fields = deal.deal_custom_fields.map(({custom_field_id, value}) => ({custom_field_id, value}))
-            //const first_query_date = getUniqueField(custom_fields, "646e0d0700a1d40017275b92")
             await CompareFields(deal).then(async res => {
 
-                const checkDeadLine = await CheckDeadLine(res.deal?.attendance.start_date);
+                const checkDeadLine = await CheckDeadLine(res.deal?.attendance.start_date, 2);
 
                 if (res.contact?.attContact) await UpdateContact(res.contact.contact.id, res.contact.params)
                     .then(() => console.log(` [ INFO ] - updated contact information ${res.contact?.contact.name}`))
@@ -37,13 +35,14 @@ export const FirstQueryDermatology = async () => {
                         })
                 }
 
-                if(res.deal?.attendance.price !== 0) await AttProductInDeal(deal, res.deal?.attendance.price);
+                if(res.deal?.attendance.price !== 0)
+                    await AttProductInDeal(deal, res.deal?.attendance.price, "6476897a6ee1810001122a17");
             })
 
         }
         console.log(` [ INFO ] - Finish process Dermatology.firstQuery....`)
 
-        return `First Query Process`
+        return `Dermatology First Query Process`
     }).catch( err => {
         console.log(" [ ERROR ] - Error executing function FirstQuery()....", err)
         return null;
