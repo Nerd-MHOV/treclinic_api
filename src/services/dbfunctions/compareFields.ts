@@ -20,7 +20,7 @@ import {CompareFieldsDeal} from "./compareFieldsDeals";
 export async function CompareFields(deal_to_compare: Deal) {
    const contact = await rdGetContactDeal(deal_to_compare.id)
         .then(async contact => {
-            return await CompareFieldsContact(contact.contacts[0], deal_to_compare.id);
+            return await CompareFieldsContact(contact.contacts[0], deal_to_compare);
         })
     const deal = await CompareFieldsDeal(deal_to_compare)
 

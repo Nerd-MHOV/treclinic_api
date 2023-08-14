@@ -5,6 +5,7 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import {errorMiddleware} from "./middleware/error";
 import {FirstQuery} from "./actions/attendance/firstQuery";
+import {OperationalSurgery} from "./actions/beforeSurgery/operationalSurgery";
 
 const app = express();
 dotenv.config();
@@ -21,12 +22,10 @@ app.get("/first-query", async  (req, res) => {
     res.json(response);
 })
 
-
-
-// todo: fazer e testar api rd station
-// todo: log de erros
-// todo: desenvolver metodo para impedir duplicata
-
+app.get("/before-surgery", async (req, res) => {
+    const response = await OperationalSurgery();
+    res.json(response);
+})
 
 
 app.use(errorMiddleware);

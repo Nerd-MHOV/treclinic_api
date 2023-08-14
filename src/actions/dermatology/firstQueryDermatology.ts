@@ -5,13 +5,13 @@ import {UpdateContact} from "../../services/rdstation/updateContact";
 import {UpdateDeal} from "../../services/rdstation/updateDeal";
 import {AttProductInDeal} from "../../services/rdstation/AttProductInDeal";
 
-export const FirstQuery = async () => {
-    console.log(` [ INFO ] - init process firstQuery ...`)
+export const FirstQueryDermatology = async () => {
+    console.log(` [ INFO ] - init process Dermatology.firstQuery ...`)
     return rdGetDeals({
         win: "null",
-        deal_stage_id: "646d27436d6ecc000f94f995"
+        deal_stage_id: "646e06782e8a2c000ea12f09"
     }).then( async deals => {
-        console.log(` [ INFO ] - find ${deals.total} deals in first query ...`)
+        console.log(` [ INFO ] - find ${deals.total} deals in DERMATOLOGY first query ...`)
 
         for (const deal of deals.deals) {
             //let custom_fields = deal.deal_custom_fields.map(({custom_field_id, value}) => ({custom_field_id, value}))
@@ -25,10 +25,9 @@ export const FirstQuery = async () => {
                     .catch(() => console.log(` [ ERROR ] - error to update contact information`))
 
                 if(res.deal?.attDeal || checkDeadLine) {
-                    //todo : verificar pq não editou o medico!
                     const params = {
                         ...(res.deal?.params ? res.deal?.params : null),
-                        ...(checkDeadLine ? {deal_stage_id: "646d27436d6ecc000f94f996"} : null )
+                        ...(checkDeadLine ? {deal_stage_id: "646e06782e8a2c000ea12f0a"} : null )
                     }
                     await UpdateDeal(deal.id, params)
                         .then(() => console.log(` [ INFO ] - updated deal ${deal.name}...`))
@@ -42,7 +41,7 @@ export const FirstQuery = async () => {
             })
 
         }
-        console.log(` [ INFO ] - Finish process firstQuery....`)
+        console.log(` [ INFO ] - Finish process Dermatology.firstQuery....`)
 
         return `First Query Process`
     }).catch( err => {
