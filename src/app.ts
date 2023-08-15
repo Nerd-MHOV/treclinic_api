@@ -61,9 +61,7 @@ app.get("/before-surgery/d/:days", async (req, res) => {
 // day of month	        1-31
 // month	            1-12 (or names)
 // day of week	        0-7 (or names, 0 or 7 are sunday)
-cron.schedule('*/30 * * * *', async () => {
-    console.log("-------------")
-    console.log(" [ CRON TAB ] - schedule to: FirstQuery()");
+cron.schedule('*/2 * * * *', async () => {
     await FirstQuery();
     console.log("-------------")
     console.log(" [ CRON TAB ] - schedule to: FirstQueryDermatology()");
