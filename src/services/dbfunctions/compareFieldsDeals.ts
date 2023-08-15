@@ -13,6 +13,10 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         const date_surgery = getUniqueField(custom_fields, "646e0ceafcdd950011703ab2")
         const medic = getUniqueField(custom_fields, "646ea8f90f9bd3000f6f6f8e")
         const agenda_type = getUniqueField(custom_fields, "64d4fd2db72bbb001e1ef67f")
+        const before_surgery_id = getUniqueField(custom_fields, "64db976c2f543a000d89f05f")
+        const before_surgery_date = getUniqueField(custom_fields, "646e0d3f8fd39400114737f0")
+        const after_surgery_id = getUniqueField(custom_fields, "64db978d83b35d0022e1a96d")
+        const after_surgery_date = getUniqueField(custom_fields, "646e0d7ede6ee9000f8fef0d")
         const attendance = (await getAttendancePk(agenda_id?.value + ""))?.rows[0];
         if(!attendance) {
             const taskDate = new Date()
@@ -90,6 +94,32 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
             attDeal = true
             console.log(` [ INFO ] - field deal agenda_type`);
         }
+
+
+        if(typeof before_surgery_id?.value === "string" && before_surgery_date) {
+            const bf_attendance = (await getAttendancePk(before_surgery_id.value))?.rows[0];
+            if(bf_attendance) {
+                const formatStartDate = format(bf_attendance.start_date, "dd/MM/yyyy")
+                if(formatStartDate !== before_surgery_date.value) {
+                    before_surgery_date.value = formatStartDate
+                    attDeal = true
+                    console.log(` [ INFO ] - field deal date_before_surgery`);
+                }
+            }
+        }
+
+        if(typeof after_surgery_id?.value === "string" && after_surgery_date) {
+            const bf_attendance = (await getAttendancePk(after_surgery_id.value))?.rows[0];
+            if(bf_attendance) {
+                const formatStartDate = format(bf_attendance.start_date, "dd/MM/yyyy")
+                if(formatStartDate !== after_surgery_date.value) {
+                    after_surgery_date.value = formatStartDate
+                    attDeal = true
+                    console.log(` [ INFO ] - field deal date_after_surgery`);
+                }
+            }
+        }
+
 
         console.log(` [ INFO ] - deal update`, attDeal);
         const params = {
