@@ -23,9 +23,7 @@ export async function CompareFieldsContact(contact: Contact, deal: Deal) {
         const address = getUniqueField(custom_fields, "646e0baaf2596c000fa9a323")
 
 
-        console.log('init get patient')
         const patient = (await getPatientPK(patient_id?.value + ""))?.rows[0]
-        console.log('finish get patient')
 
         if(!patient) {
             const taskDate = new Date()

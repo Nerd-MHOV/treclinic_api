@@ -101,14 +101,10 @@ export const getAttendancesAndSeparate = async () => {
 
 export const getPatientPK = async (pk: string | number) => {
     try {
-        console.log('creating client..')
         const client = await connectPG();
         if (!client) throw new Error (`Erro DB connection`)
-        console.log('making query..')
-
         return await client.query(`SELECT * FROM patients WHERE id = '${pk}' `)
             .then(response => {
-                console.log (response.rowCount);
                 return response
             })
             .finally(async () => {
@@ -123,6 +119,7 @@ export const getPatientPK = async (pk: string | number) => {
 }
 
 export const getAttendancePk = async (pk: string | number) => {
+    if(pk === "") return null
     try {
         const today = new Date().toISOString()
         const client = await connectPG();

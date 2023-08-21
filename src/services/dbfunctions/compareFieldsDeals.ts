@@ -96,7 +96,7 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         }
 
 
-        if(typeof before_surgery_id?.value === "string" && before_surgery_date) {
+        if(typeof before_surgery_id?.value === "string" && before_surgery_date && before_surgery_date.value !== "") {
             const bf_attendance = (await getAttendancePk(before_surgery_id.value))?.rows[0];
             if(bf_attendance) {
                 const formatStartDate = format(bf_attendance.start_date, "dd/MM/yyyy")
@@ -108,7 +108,7 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
             }
         }
 
-        if(typeof after_surgery_id?.value === "string" && after_surgery_date) {
+        if(typeof after_surgery_id?.value === "string" && after_surgery_date && after_surgery_date.value !== "") {
             const bf_attendance = (await getAttendancePk(after_surgery_id.value))?.rows[0];
             if(bf_attendance) {
                 const formatStartDate = format(bf_attendance.start_date, "dd/MM/yyyy")
