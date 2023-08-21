@@ -29,7 +29,7 @@ export const getAttendances = async () => {
         const res = await client
             .query('SELECT * FROM new_attendances ORDER BY updated_at DESC LIMIT 200')
         console.log(res.rows[0].updated_at)
-
+        await end_connectionPG(client);
         return res
     } catch (e) {
         console.log(` [ ERROR ]: getAttendance error ....`)
@@ -62,6 +62,7 @@ export const getFutureAttendances = async () => {
             ORDER BY na.start_date ASC
             `)
         console.log('Futures attendances: ', res.rowCount);
+        await end_connectionPG(client);
 
         return res;
     } catch (e) {
@@ -94,7 +95,12 @@ export const getPatientPK = async (pk: string | number) => {
     try {
         const client = await connectPG();
         if (!client) throw new Error (`Erro DB connection`)
-        return await client.query(`SELECT * FROM patients WHERE id = '${pk}' `)
+
+        const response = await client.query(`SELECT * FROM patients WHERE id = '${pk}' `)
+        await end_connectionPG(client);
+
+        return response
+
     } catch (e) {
         console.log(` [ ERROR ] - erro to get patient to pk`, pk)
         return null
@@ -106,12 +112,14 @@ export const getAttendancePk = async (pk: string | number) => {
         const today = new Date().toISOString()
         const client = await connectPG();
         if (!client) throw new Error (`Erro DB connection`)
-        return await client.query(`
+        const response = await client.query(`
             SELECT na.*, ui.name as medic_name, ae.name as agenda_name
             FROM new_attendances na 
             JOIN users ui ON na.user_id = ui.id
             JOIN agenda_events ae ON na.event_id = ae.id
             WHERE na.id = '${pk}' AND na.start_date > '${today}'`)
+        await end_connectionPG(client);
+        return response
     } catch (e) {
         console.log(` [ ERROR ] - erro to get patient to pk`)
         return null
@@ -127,7 +135,7 @@ export const saveLogAttendanceRoutine = async (attendance_id: number, patient_id
                 VALUES ('${attendance_id}','${patient_id}', '${rd_id}');
             `)
         console.log(res);
-
+        await end_connectionPG(client)
         return res;
     } catch (e) {
         console.log(` [ ERROR ] Save in db rd_routines_attendance....`)
