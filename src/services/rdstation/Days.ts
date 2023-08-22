@@ -13,4 +13,5 @@ export const day_dead_line = {
         "200": () => Day_x(120, '64d78b2a08fe9f000d09acb9', '64adea89c2b076002e980110'),
         "260": () => Day_x(200, '64d78b68da6c7c0028e10e99', '64d78b2a08fe9f000d09acb9'),
         "x": () => Day_x(260, '64adea89c2b076002e98010f', '64d78b68da6c7c0028e10e99'),
+
 };
