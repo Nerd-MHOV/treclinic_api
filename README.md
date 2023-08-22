@@ -23,7 +23,7 @@ Esse sistema é responsavel por buscar informações na base de dados do AMIGOAP
 - http://3.84.225.179:3333/block-date-surgery
   roda a automação para o funil Comercial___Bloquear Data Cirurgia
 
-- http://3.84.225.179:3333/dermatology/d/:days
+- http://3.84.225.179:3333/d/:days
   roda a automação para o funil D-X
   OBS: substitua o :Days, pelo numero de dias ex:
   /d/x, /d/260, /d/200 .....
