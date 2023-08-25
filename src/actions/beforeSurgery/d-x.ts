@@ -13,7 +13,7 @@ export const Day_x = async (day_dead_line: number, actual_stage: string, next_st
         console.log(` [ INFO ] - find ${deals.total} deals in BeforeSurgery.D-X (${day_dead_line}) ...`)
 
         for (const deal of deals.deals) {
-            await CompareFields(deal).then(async res => {
+            await CompareFields(deal, true).then(async res => {
                 const checkDeadLine = await CheckDeadLine(res.deal?.attendance.start_date, day_dead_line, false)
                 if(checkDeadLine) console.log(" [ INFO ] - Find Dead Line to", deal.name);
 

@@ -11,7 +11,7 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         const agenda_id = getUniqueField(custom_fields, "64d3f8ff01197600181424eb")
         const date_first_query = getUniqueField(custom_fields, "646e0d0700a1d40017275b92")
         const date_surgery = getUniqueField(custom_fields, "646e0ceafcdd950011703ab2")
-        const medic = getUniqueField(custom_fields, "646ea8f90f9bd3000f6f6f8e")
+        const medic = getUniqueField(custom_fields, "64e9107af25223000eaa82e2")
         const agenda_type = getUniqueField(custom_fields, "64d4fd2db72bbb001e1ef67f")
         const before_surgery_id = getUniqueField(custom_fields, "64db976c2f543a000d89f05f")
         const before_surgery_date = getUniqueField(custom_fields, "646e0d3f8fd39400114737f0")
@@ -69,19 +69,19 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
             attDeal = true
             console.log(` [ INFO ] - field deal date_surgery`);
         }
-        if(medic && Array.isArray(medic.value) && !!attendance.medic_name && !medic.value.includes(attendance.medic_name)) {
-                medic.value.push(attendance.medic_name)
+        if(medic && !!attendance.medic_name) {
+                medic.value = attendance.medic_name
                 attDeal = true
                 console.log(` [ INFO ] - field deal medic_name`);
         } else if (!medic && !!attendance.medic_name) {
             custom_fields.push({
-                custom_field_id: '646ea8f90f9bd3000f6f6f8e',
-                // @ts-ignore
-                value: [attendance.medic_name]
+                custom_field_id: '64e9107af25223000eaa82e2',
+                value: attendance.medic_name
             })
             attDeal = true
             console.log(` [ INFO ] - field deal medic_name`);
         }
+
         if(agenda_type && !!attendance.agenda_name && agenda_type.value !== attendance.agenda_name) {
             agenda_type.value = attendance.agenda_name
             attDeal = true
@@ -135,6 +135,7 @@ export async function CompareFieldsDeal(deal: Deal, surgery = false) {
         }
 
     }catch (e) {
+        console.log(e);
         console.log(` [ ERROR ] - error to compare fields deal: `, deal.name)
         return null
     }
