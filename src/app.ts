@@ -15,6 +15,7 @@ import {UpdateDeal} from "./services/rdstation/updateDeal";
 import {rdCreateTask} from "./services/rdstation/createTask";
 import {format} from "date-fns";
 import {AppointmentConfirmationDermatology} from "./actions/dermatology/appointmentConfirmationDermatology";
+import {Sleep} from "./services/chatguru/Sleep";
 
 const app = express();
 dotenv.config();
@@ -135,6 +136,12 @@ cron.schedule("0 3 * * *", async () => {
         console.log("-------------")
     }
 })
+
+// cron.schedule('0 9 * * *', async () => {
+//     await AppointmentConfirmation();
+//     await Sleep(1000);
+//     await AppointmentConfirmationDermatology();
+// })
 
 function sleep(ms: number) {
     console.log("sleep to ", ms, "ms")
