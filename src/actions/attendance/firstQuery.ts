@@ -5,6 +5,12 @@ import {UpdateContact} from "../../services/rdstation/updateContact";
 import {UpdateDeal} from "../../services/rdstation/updateDeal";
 import {AttProductInDeal} from "../../services/rdstation/AttProductInDeal";
 
+
+/**
+ *  Funil: atendimento
+ *  Etapa: Agendamento: Primeira Consulta
+ *  Ações: Atualiza Contato, Atualiza Negocio e Atualiza Produto
+ */
 export const FirstQuery = async () => {
     console.log(` [ INFO ] - init process firstQuery ...`)
     return rdGetDeals({
@@ -25,7 +31,6 @@ export const FirstQuery = async () => {
                     .catch(() => console.log(` [ ERROR ] - error to update contact information`))
 
                 if(res.deal?.attDeal || checkDeadLine) {
-                    //todo : verificar pq não editou o medico!
                     const params = {
                         ...(res.deal?.params ? res.deal?.params : null),
                         ...(checkDeadLine ? {deal_stage_id: "646d27436d6ecc000f94f996"} : null )

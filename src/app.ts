@@ -10,6 +10,7 @@ import {BlockDateSurgery} from "./actions/commercial/blockDateSurgery";
 import {FirstQueryDermatology} from "./actions/dermatology/firstQueryDermatology";
 import {day_dead_line} from "./services/rdstation/Days";
 import cron from "node-cron";
+import {AppointmentConfirmation} from "./actions/attendance/appointmentConfirmation";
 
 const app = express();
 dotenv.config();
@@ -21,9 +22,27 @@ app.use(cors())
 
 //ports
 
+// ROUTES TO CHATGURU RESPONSE
+
+app.post('/chatguru/yes', async (req, res) => {
+    console.log(req.body);
+    return res.send('Success')
+})
+app.post('/chatguru/not', async (req, res) => {
+    console.log(req.body);
+    return res.send('Success')
+})
+
+// ROUTES TO TEST
+
 app.get("/first-query", async  (req, res) => {
     const response = await FirstQuery()
     res.json(response);
+})
+
+app.get('/appointment-confirmation',async  (req, res) => {
+    const response = await AppointmentConfirmation();
+    return res.json(response)
 })
 
 app.get("/before-surgery", async (req, res) => {
