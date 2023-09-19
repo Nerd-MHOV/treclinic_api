@@ -28,16 +28,14 @@ app.use(cors())
 // ROUTES TO CHATGURU RESPONSE
 
 app.post('/chatguru/yes', async (req, res) => {
-    console.log(req.body);
     // mudar etapa: 646d27436d6ecc000f94f997 receber paciente na treclinic
     if(req.body.campos_personalizados.RD_ID) await UpdateDeal(req.body.campos_personalizados.RD_ID, {
+        deal: {},
         deal_stage_id: '646d27436d6ecc000f94f997'
     })
     return res.send('Success')
 })
 app.post('/chatguru/not', async (req, res) => {
-    console.log(req.body);
-
 
     // criar tarefa: Reagenda consulta
     // mudar etapa: 646d27436d6ecc000f94f995 agendamento Primeira consulta
@@ -55,6 +53,7 @@ app.post('/chatguru/not', async (req, res) => {
             }
         })
         await UpdateDeal(req.body.campos_personalizados.RD_ID, {
+            deal: {},
             deal_stage_id: '646d27436d6ecc000f94f995'
         })
 
