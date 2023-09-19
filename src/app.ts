@@ -14,6 +14,7 @@ import {AppointmentConfirmation} from "./actions/attendance/appointmentConfirmat
 import {UpdateDeal} from "./services/rdstation/updateDeal";
 import {rdCreateTask} from "./services/rdstation/createTask";
 import {format} from "date-fns";
+import {AppointmentConfirmationDermatology} from "./actions/dermatology/appointmentConfirmationDermatology";
 
 const app = express();
 dotenv.config();
@@ -28,9 +29,9 @@ app.use(cors())
 // ROUTES TO CHATGURU RESPONSE
 
 app.post('/chatguru/yes', async (req, res) => {
-    // mudar etapa: 646d27436d6ecc000f94f996 receber paciente na treclinic
+    // mudar etapa: 646d27436d6ecc000f94f997 receber paciente na treclinic
     if(req.body.campos_personalizados.RD_ID) await UpdateDeal(req.body.campos_personalizados.RD_ID, {
-        deal_stage_id: '646d27436d6ecc000f94f996'
+        deal_stage_id: req.body.campos_personalizados.API_Funil == 'Atendimento' ? '646d27436d6ecc000f94f997' : '646e06782e8a2c000ea12f0b',
     })
     return res.send('Success')
 })
@@ -52,7 +53,7 @@ app.post('/chatguru/not', async (req, res) => {
             }
         })
         await UpdateDeal(req.body.campos_personalizados.RD_ID, {
-            deal_stage_id: '646d27436d6ecc000f94f995'
+            deal_stage_id: req.body.campos_personalizados.API_Funil == 'Atendimento' ? '646d27436d6ecc000f94f995' : '646e06782e8a2c000ea12f09'
         })
 
     }
@@ -68,6 +69,11 @@ app.get("/first-query", async  (req, res) => {
 
 app.get('/appointment-confirmation',async  (req, res) => {
     const response = await AppointmentConfirmation();
+    return res.json(response)
+})
+
+app.get('/dermatology/appointment-confirmation',async  (req, res) => {
+    const response = await AppointmentConfirmationDermatology();
     return res.json(response)
 })
 

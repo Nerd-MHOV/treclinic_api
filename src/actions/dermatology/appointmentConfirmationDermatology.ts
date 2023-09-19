@@ -12,17 +12,17 @@ import {Dialog} from "../../services/chatguru/Dialog";
 
 
 /**
- *  Funil: atendimento
+ *  Funil: Dermatologia
  *  Etapa: Confirmação de agendamento
  *  Ações: Editar Campos no Chatguru, Enviar mensagem de confirmação, mudar de etapa
  */
-export const AppointmentConfirmation = async () => {
+export const AppointmentConfirmationDermatology = async () => {
     console.log(` [ INFO ] - init process appointmentConfirmation ...`)
     return rdGetDeals({
         win: "null",
-        deal_stage_id: "646d27436d6ecc000f94f996" //646d27436d6ecc000f94f996
+        deal_stage_id: "646e06782e8a2c000ea12f0a"
     }).then( async deals => {
-        console.log(` [ INFO ] - find ${deals.total} deals in appointment confirmation ...`)
+        console.log(` [ INFO ] - find ${deals.total} deals in appointment confirmation in Dermatology ...`)
 
         for (const deal of deals.deals) {
         let custom_fields = deal.deal_custom_fields.map(({custom_field_id, value}) => ({custom_field_id, value}))
@@ -43,7 +43,7 @@ export const AppointmentConfirmation = async () => {
                     API_Data: date,
                     API_Hora: hour,
                     RD_ID: deal.id,
-                    API_Funil: "Atendimento"
+                    API_Funil: "Dermatologia"
                 });
                 await Sleep(1000);
                 await Dialog(phone, '64b0554f63d1265a3b53f785')
@@ -53,10 +53,10 @@ export const AppointmentConfirmation = async () => {
            }
 
         }
-        console.log(` [ INFO ] - Finish process appointmentConfirmation....`)
+        console.log(` [ INFO ] - Finish process appointmentConfirmationDermatology....`)
         return `Appointment Confirmation process`
     }).catch( err => {
-        console.log(" [ ERROR ] - Error executing function AppointmentConfirmation()....", err)
+        console.log(" [ ERROR ] - Error executing function AppointmentConfirmationDermatology()....", err)
         return null;
     })
 
