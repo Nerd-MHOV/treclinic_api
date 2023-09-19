@@ -11,6 +11,9 @@ import {FirstQueryDermatology} from "./actions/dermatology/firstQueryDermatology
 import {day_dead_line} from "./services/rdstation/Days";
 import cron from "node-cron";
 import {AppointmentConfirmation} from "./actions/attendance/appointmentConfirmation";
+import {UpdateDeal} from "./services/rdstation/updateDeal";
+import {rdCreateTask} from "./services/rdstation/createTask";
+import {format} from "date-fns";
 
 const app = express();
 dotenv.config();
@@ -26,10 +29,36 @@ app.use(cors())
 
 app.post('/chatguru/yes', async (req, res) => {
     console.log(req.body);
+    // mudar etapa: 646d27436d6ecc000f94f997 receber paciente na treclinic
+    if(req.body.campos_personalizados.RD_ID) await UpdateDeal(req.body.campos_personalizados.RD_ID, {
+        deal_stage_id: '646d27436d6ecc000f94f997'
+    })
     return res.send('Success')
 })
 app.post('/chatguru/not', async (req, res) => {
     console.log(req.body);
+
+
+    // criar tarefa: Reagenda consulta
+    // mudar etapa: 646d27436d6ecc000f94f995 agendamento Primeira consulta
+    if(req.body.campos_personalizados.RD_ID) {
+        const taskDate = new Date()
+        taskDate.setFullYear(taskDate.getFullYear() - 1);
+        await rdCreateTask({
+            task: {
+                deal_id: req.body.campos_personalizados.RD_ID,
+                subject: "Reagendar consulta",
+                type: "task",
+                date: format(taskDate, "yyyy-MM-dd"),
+                hour: format(new Date(), "HH:ii"),
+                notes: `O Cliente não confirmou a data, sendo necessário reagendar!`
+            }
+        })
+        await UpdateDeal(req.body.campos_personalizados.RD_ID, {
+            deal_stage_id: '646d27436d6ecc000f94f995'
+        })
+
+    }
     return res.send('Success')
 })
 

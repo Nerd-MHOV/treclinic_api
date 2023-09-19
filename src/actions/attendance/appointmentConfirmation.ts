@@ -42,6 +42,7 @@ export const AppointmentConfirmation = async () => {
                     API_Nome_Medico: doctorName,
                     API_Data: date,
                     API_Hora: hour,
+                    RD_ID: deal.id,
                 });
                 await Sleep(1000);
                 await Dialog(phone, '64b0554f63d1265a3b53f785')
