@@ -30,7 +30,6 @@ app.use(cors())
 app.post('/chatguru/yes', async (req, res) => {
     // mudar etapa: 646d27436d6ecc000f94f996 receber paciente na treclinic
     if(req.body.campos_personalizados.RD_ID) await UpdateDeal(req.body.campos_personalizados.RD_ID, {
-        deal: {},
         deal_stage_id: '646d27436d6ecc000f94f996'
     })
     return res.send('Success')
@@ -53,7 +52,6 @@ app.post('/chatguru/not', async (req, res) => {
             }
         })
         await UpdateDeal(req.body.campos_personalizados.RD_ID, {
-            deal: {},
             deal_stage_id: '646d27436d6ecc000f94f995'
         })
 
